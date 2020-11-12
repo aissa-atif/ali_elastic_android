@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +28,12 @@ public class scan extends AppCompatActivity {
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+        open_food_fac test = new open_food_fac() ;
+
 
         if (ContextCompat.checkSelfPermission(scan.this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED){
@@ -49,11 +54,9 @@ public class scan extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(scan.this, result.getText(), Toast.LENGTH_SHORT).show();
-                        res(result.getText());
-                        /*
-                        Intent myIntent = new Intent(scan.this,  scan.class);
+                        Intent myIntent = new Intent(scan.this,  Produit.class);
                         myIntent.putExtra("key", result.getText()); //Optional parameters
-                        scan.this.startActivity(myIntent); */
+                        scan.this.startActivity(myIntent);
                     }
                 });
             }

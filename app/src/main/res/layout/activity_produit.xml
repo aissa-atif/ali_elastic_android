@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+
+<LinearLayout
 
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
-    android:layout_marginTop="30dp"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".Produit">
+
 
     <TextView
         android:id="@+id/Titre"
@@ -23,7 +29,7 @@
 
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/score_nova"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
@@ -33,7 +39,7 @@
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/note_g"
+        android:id="@+id/score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -546,4 +552,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="6%" />
+
 </LinearLayout>
+</ScrollView>
