@@ -71,11 +71,16 @@ public class Produit extends AppCompatActivity {
                 try {
                     String nova = product.getString("nova_groups") ;
                     score_nova.setText(nova);
-                    if (nova == "1"){
-                        score_nova.setBackgroundColor(Color.parseColor("#FECC00"));
-                    }else if (nova == "2"){
-                        score_nova.setBackgroundColor(Color.parseColor("#86BC2B"));
 
+                    if (nova.equals(""+1)){
+                        score_nova.setBackgroundColor(Color.parseColor("#00AA00"));
+                    }else if (nova.equals(""+2)){
+                        score_nova.setBackgroundColor(Color.parseColor("#FFCC00"));
+                    }else if (nova.equals(""+3)){
+                        score_nova.setBackgroundColor(Color.parseColor("#FF6600"));
+                    }else if (nova.equals(""+4)){
+                        Log.e("test", "Nova"+nova );
+                        score_nova.setBackgroundColor(Color.parseColor("#FE0000"));
                     }
                 } catch (JSONException e) {
                     score_nova.setText("NA");
@@ -116,7 +121,7 @@ public class Produit extends AppCompatActivity {
                 }
                 TextView quantité = (TextView) findViewById(R.id.quantité);
                 try {
-                    quantité.setText(product.getString("product_quantity"));
+                    quantité.setText(product.getString("product_quantity")+ "  g" );
                 } catch (JSONException e) {
                     quantité.setText("NA");
                 }
