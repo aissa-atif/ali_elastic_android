@@ -18,12 +18,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class alivision extends AppCompatActivity {
@@ -32,15 +35,26 @@ public class alivision extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //uploadFoto();
+
+        /*File myFile = new File("/mipmap-mdpi/unnamed.jpg");
+        RequestParams params = new RequestParams();
+        try {
+            params.put("profile_picture", myFile);
+        } catch(FileNotFoundException e) {}
+         */
+        File file = new File("/mipmap-mdpi/unnamed.jpg");
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        RequestParams params = new RequestParams();
+        params.put("profile_picture", new ByteArrayInputStream(bytes), "profile_picture");
+
+
         scan_test test = new scan_test();
-        test.get(null, new JsonHttpResponseHandler(){
+        test.post(params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject dataObject) {
                 // If the response is JSONObject instead of expected JSONArray
                 Log.e("WWWW", "Bien ");
-
-
-
 
             }
 
@@ -48,10 +62,24 @@ public class alivision extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray dataList) {
                 Log.e("WWWW", "Bien");
                 // Pop one
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("test", responseString.toString());
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
+
 
         setContentView(R.layout.activity_alivision);
     }

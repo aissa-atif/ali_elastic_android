@@ -3,9 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+
+import static com.example.myapplication.R.drawable.ic_nova_group_1;
 
 public class Produit extends AppCompatActivity {
 
@@ -45,7 +45,7 @@ public class Produit extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject dataObject) {
 
-
+                 Evalutation_nutri Evaluation = new Evalutation_nutri();
                 JSONObject product = null;
                 try {
                     product = (JSONObject) dataObject.get("product");
@@ -65,25 +65,29 @@ public class Produit extends AppCompatActivity {
 
                 // nutriscore_grade - product_name - countries - url_front
                 String url_front ;
-                TextView score_nova = (TextView) findViewById(R.id.score_nova);
+                ImageView score_nova = (ImageView) findViewById(R.id.score_nova);
+                TextView nova_text = (TextView)findViewById(R.id.nova_text);
 
 
                 try {
                     String nova = product.getString("nova_groups") ;
-                    score_nova.setText(nova);
+
 
                     if (nova.equals(""+1)){
-                        score_nova.setBackgroundColor(Color.parseColor("#00AA00"));
+                        score_nova.setBackgroundResource(ic_nova_group_1);
+                        nova_text.setText("Aliments non transformés ou transformés minimalement");
                     }else if (nova.equals(""+2)){
-                        score_nova.setBackgroundColor(Color.parseColor("#FFCC00"));
+                        score_nova.setBackgroundResource(R.drawable.ic_nova_group_2);
+                        nova_text.setText("Ingrédients culinaires transformés");
                     }else if (nova.equals(""+3)){
-                        score_nova.setBackgroundColor(Color.parseColor("#FF6600"));
+                        score_nova.setBackgroundResource(R.drawable.ic_nova_group_3);
+                        nova_text.setText("Aliments transformés");
                     }else if (nova.equals(""+4)){
-                        Log.e("test", "Nova"+nova );
-                        score_nova.setBackgroundColor(Color.parseColor("#FE0000"));
+                        nova_text.setText("Produits alimentaires et boissons ultra-transformés");
+                        score_nova.setBackgroundResource(R.drawable.ic_nova_group_4);
                     }
                 } catch (JSONException e) {
-                    score_nova.setText("NA");
+
                 }
                  TextView description = (TextView) findViewById(R.id.Description);
                 try {
@@ -92,12 +96,26 @@ public class Produit extends AppCompatActivity {
                     description.setText("NA");
                 }
 
-                TextView score = (TextView)findViewById(R.id.score);
+                ImageView score = (ImageView) findViewById(R.id.score);
+                String score_nut ;
                 try {
-                    score.setText(product.getString("nutriscore_grade"));
+                   score_nut = product.getString("nutriscore_grade");
+
+                    if (score_nut.equals(""+1)){
+                        score.setBackgroundResource(R.drawable.ic_nutriscore_a);
+                    }else if (score_nut.equals("b")){
+                        score.setBackgroundResource(R.drawable.ic_nutriscore_b);
+                    }else if (score_nut.equals("c")){
+                        score.setBackgroundResource(R.drawable.ic_nutriscore_c);
+                    }else if (score_nut.equals("d")){
+                        score.setBackgroundResource(R.drawable.ic_nutriscore_d);
+                    }
+                    else if (score_nut.equals("e")){
+                        score.setBackgroundResource(R.drawable.ic_nutriscore_e);
+                    }
 
                 } catch (JSONException e) {
-                    score.setText("NA");
+
                 }
                 ImageView image_front = (ImageView) findViewById(R.id.image_front) ;
                 try {
@@ -162,10 +180,16 @@ public class Produit extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 TextView sugars = (TextView)findViewById(R.id.sugars);
+                TextView Level_sucre = (TextView)findViewById(R.id.Level_Sucre_textview);
+                ImageView Level_sucre_image = (ImageView)findViewById(R.id.Level_Sucre_image);
                 try {
                     String sugars_unit = nutriments.getString("sugars_unit");
                     String sugars_serving = nutriments.getString("sugars_serving");
                     sugars.setText(sugars_serving + sugars_unit);
+                    String sugars_100g = nutriments.getString("sugars_100g");
+                    Evaluation.Evaluation_sucres(Float.parseFloat(sugars_100g),Level_sucre,Level_sucre_image);
+
+
 
                 } catch (JSONException e) {
                     sugars.setText("NA");
@@ -213,10 +237,15 @@ public class Produit extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 TextView fat = (TextView)findViewById(R.id.fat);
+                TextView lipide = (TextView)findViewById(R.id.Level_grasse_textview);
+                ImageView lipide_image = (ImageView) findViewById(R.id.Level_grasse_image);
                 try {
                     String fat_unit = nutriments.getString("fat_unit");
                     String fat_serving = nutriments.getString("fat_serving");
                     fat.setText(fat_serving+ fat_unit);
+                    String fat_100g = nutriments.getString("fat_100g");
+                    Evaluation.Evaluation_Lipid(Float.parseFloat(fat_100g),lipide,lipide_image);
+
                 } catch (JSONException e) {
                     fat.setText("NA");
 
@@ -241,6 +270,30 @@ public class Produit extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     energy.setText("NA");
+                    e.printStackTrace();
+                }
+
+                TextView sel = (TextView)findViewById(R.id.Level_Sel_textview);
+                ImageView sel_image = (ImageView)findViewById(R.id.Level_Sel_image);
+                try {
+                    String salt_100g = nutriments.getString("salt_100g");
+                    Evaluation.Evaluation_sel(Float.parseFloat(salt_100g),sel,sel_image);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                TextView satured_fat = (TextView) findViewById(R.id.saturated_fat);
+                TextView Level_grasseS = (TextView)findViewById(R.id.Level_grasseS_view);
+                ImageView Level_grasseS_image = (ImageView)findViewById(R.id.Level_grasseS_image);
+                try {
+
+                    String saturated_fat_serving = nutriments.getString("saturated-fat_serving");
+                    String saturated_fat_unit = nutriments.getString("saturated-fat_unit");
+                    satured_fat.setText(saturated_fat_serving +saturated_fat_unit);
+                    String saturated_fat_100g = nutriments.getString("saturated-fat_100g");
+                    Evaluation.Evaluation_Acide_g_s(Float.parseFloat(saturated_fat_100g),Level_grasseS,Level_grasseS_image);
+
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
